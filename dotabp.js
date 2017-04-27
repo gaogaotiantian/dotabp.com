@@ -6,7 +6,7 @@ var heroData;
 // Input of the function is -1 to 1
 // If it's not, it will be saturated
 function RateToColor(rate) {
-    colorStr = "rgb("
+    var colorStr = "rgb("
     if (rate > 1) {
         rate = 1;
     } else if (rate < -1) {
@@ -42,8 +42,8 @@ function AddHero(heroName) {
     html += '</div>';
     return html
 }
-function GetHeroDataHtml(heroName) {
-    html = $("<p>");
+function GetHeroDataHtml(heroName, heroType = "") {
+    var html = $("<p>");
     var d = GetHeroData(heroName);
     var team = d[0];
     var opp = -d[1];
@@ -52,42 +52,46 @@ function GetHeroDataHtml(heroName) {
     var $t = $("<span>");
     var team_color_sat = 255 - Math.min(255, Math.round(Math.abs(team/5*255))).toString();
     var opp_color_sat = 255 - Math.min(255, Math.round(Math.abs(opp/5*255))).toString();
-    if (team > 0) {
-        $t.text("Team +" + team + "%");
-        $t.css({"color":"rgb(" +team_color_sat+",255,"+team_color_sat+")"});
-    } else {
-        $t.text("Team " + team + "%");
-        $t.css({"color":"rgb(255,"+team_color_sat+","+team_color_sat+")"});
+    if (heroType != "enemy") {
+        if (team > 0) {
+            $t.text("Team +" + team + "%");
+            $t.css({"color":"rgb(" +team_color_sat+",255,"+team_color_sat+")"});
+        } else {
+            $t.text("Team " + team + "%");
+            $t.css({"color":"rgb(255,"+team_color_sat+","+team_color_sat+")"});
+        }
+        html.append($t);
+        html.append("<br>");
+        $t = $("<span>")
+        if (self_corr > 0) {
+            $t.text("Corr +" + self_corr + "%");
+        } else {
+            $t.text("Corr " + self_corr + "%");
+        }
+        $t.css({"color":RateToColor(self_corr/10)});
+        html.append($t);
+        html.append("<br>");
     }
-    html.append($t);
-    html.append("<br>");
-    $t = $("<span>")
-    if (self_corr > 0) {
-        $t.text("Corr +" + self_corr + "%");
-    } else {
-        $t.text("Corr " + self_corr + "%");
+    if (heroType != "self") {
+        $t = $("<span>");
+        if (opp > 0) {
+            $t.text("Opp +" + opp + "%");
+            $t.css({"color":"rgb(" +opp_color_sat+",255,"+opp_color_sat+")"});
+        } else {
+            $t.text("Opp " + opp + "%");
+            $t.css({"color":"rgb(255,"+opp_color_sat+","+opp_color_sat+")"});
+        }
+        html.append($t);
+        html.append("<br>");
+        $t = $("<span>")
+        if (enemy_corr > 0) {
+            $t.text("Corr +" + enemy_corr + "%");
+        } else {
+            $t.text("Corr " + enemy_corr + "%");
+        }
+        $t.css({"color":RateToColor(enemy_corr/10)});
+        html.append($t);
     }
-    $t.css({"color":RateToColor(self_corr/10)});
-    html.append($t);
-    html.append("<br>")
-    $t = $("<span>");
-    if (opp > 0) {
-        $t.text("Opp +" + opp + "%");
-        $t.css({"color":"rgb(" +opp_color_sat+",255,"+opp_color_sat+")"});
-    } else {
-        $t.text("Opp " + opp + "%");
-        $t.css({"color":"rgb(255,"+opp_color_sat+","+opp_color_sat+")"});
-    }
-    html.append($t);
-    html.append("<br>");
-    $t = $("<span>")
-    if (enemy_corr > 0) {
-        $t.text("Corr +" + enemy_corr + "%");
-    } else {
-        $t.text("Corr " + enemy_corr + "%");
-    }
-    $t.css({"color":RateToColor(enemy_corr/10)});
-    html.append($t);
     return html.html()
 }
 function GetHeroData(heroName) {
@@ -228,7 +232,13 @@ function RefreshPage() {
 
     // Refresh hero rate
     $(".hero_data").each(function() {
-        $(this).html(GetHeroDataHtml($(this).attr("heroName")));
+        if ($(this).parent().parent().hasClass("self_on_stage_hero")) {
+            $(this).html(GetHeroDataHtml($(this).attr("heroName"), "self"));
+        } else if ($(this).parent().parent().hasClass("enemy_on_stage_hero")) {
+            $(this).html(GetHeroDataHtml($(this).attr("heroName"), "enemy"));
+        } else {
+            $(this).html(GetHeroDataHtml($(this).attr("heroName")));
+        }
     });
 }
 $(document).ready(function() {
