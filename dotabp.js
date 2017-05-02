@@ -182,13 +182,15 @@ function GetCorr(heroName, isSelf) {
 }
 // Win rate calculation functions
 function GetMatchUp(heroName1, heroName2) {
-    if (heroData)
+    if (heroData && heroName1 != heroName2) {
         return heroData[heroName1]["matchup"][heroName2];
+    }
     return 1;
 }
 function GetTeamMate(heroName1, heroName2) {
-    if (heroData)
+    if (heroData && heroName1 != heroName2) {
         return heroData[heroName1]["teammate"][heroName2];
+    }
     return 1;
 }
 function GetHeroRate(heroName) {
@@ -302,8 +304,8 @@ $(document).ready(function() {
         RefreshPage()
     })
     .on('mousemove', 'img', function(e) {
+        var name = $(this).parent().attr("heroname");
         if ($(this).parent().parent().hasClass("off_stage_hero")) {
-            var name = $(this).parent().attr("heroname");
             if (e.offsetX < e.target.width/2) {
                 $(".self_on_stage_hero").each(function() {
                     $(this).find("img").css({"border-color":RateToColor((GetTeamMate(name, $(this).find(".hero").attr("heroname")) - 1)/0.05)});
@@ -321,12 +323,24 @@ $(document).ready(function() {
                 });
                 $(this).css({"border-color":"red"});
             }
+        } else if ($(this).parent().parent().hasClass("self_on_stage_hero")) {
+            $(".self_on_stage_hero").each(function() {
+                $(this).find("img").css({"border-color":RateToColor((GetTeamMate(name, $(this).find(".hero").attr("heroname")) - 1)/0.05)});
+            });
+            $(".enemy_on_stage_hero").each(function() {
+                $(this).find("img").css({"border-color":RateToColor((GetMatchUp(name, $(this).find(".hero").attr("heroname")) - 1)/0.05)});
+            });
+        } else if ($(this).parent().parent().hasClass("enemy_on_stage_hero")) {
+            $(".enemy_on_stage_hero").each(function() {
+                $(this).find("img").css({"border-color":RateToColor((GetTeamMate(name, $(this).find(".hero").attr("heroname")) - 1)/0.05)});
+            });
+            $(".self_on_stage_hero").each(function() {
+                $(this).find("img").css({"border-color":RateToColor((GetMatchUp(name, $(this).find(".hero").attr("heroname")) - 1)/0.05)});
+            });
         }
     })
     .on('mouseleave', 'img', function(e) {
-        if ($(this).parent().parent().hasClass("off_stage_hero")) {
-            $(this).css({"border-color":"transparent"});
-            $(".on_stage_hero").find("img").css({"border-color":"transparent"});
-        }
+        $(this).css({"border-color":"transparent"});
+        $(".on_stage_hero").find("img").css({"border-color":"transparent"});
     });
 });
