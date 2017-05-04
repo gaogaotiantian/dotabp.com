@@ -10,6 +10,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="./dotabp.css">
+    <script src="./language.js"></script>
     <script src="./dotabp.js"></script>
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -23,13 +24,23 @@
   </head>
   <body>
   <div class="container-fluid">
-    <div class="page-header">
-      <h1>Match Status</h1>
+    <div class="row">
+      <div class="col-11">
+        <div class="page-header">
+          <h1 class="multi_language" id="match_status">Match Status</h1>
+        </div>
+      </div>
+      <div class="col-1">
+         <select id="language_select">
+           <option value="English">English</option>
+           <option value="Chinese">Chinese</option>
+         </select>
+      </div>
     </div>
     <div class="row hero_row_div" id="on_stage_hero_div">
       <div class="col" style="border-style:solid">
         <div class="row">
-          <h2>Your Team</h2>
+          <h2 class="multi_language" id="your_team">Your Team</h2>
         </div>
         <div class="row no-gutters" id="on_stage_hero_self_div">
         </div>
@@ -37,34 +48,34 @@
       <div class="col1"></div>
       <div class="col" style="border-style:solid">
         <div class="row">
-          <h2>Enemy Team</h2>
+          <h2 class="multi_language" id="enemy_team">Enemy Team</h2>
         </div>
         <div class="row no-gutters" id="on_stage_hero_enemy_div">
         </div>
       </div>
     </div>
     <div class="row" id="win_rate_div">
-      <p id="win_rate_p"></p>
+      <p class="multi_language" id="win_rate">Win Rate</p>
     </div>
     <div class=page-header>
-      <h1>Choose Hero</h1>
+      <h1 class="multi_language" id="choose_hero">Choose Hero</h1>
     </div>
     <div class="hero_row_div">
-      <div class="row no-gutters" id="off_stage_hero_div_str_1">
+      <div class="row no-gutters off_stage_hero_div" id="off_stage_hero_div_str_1">
       </div>
-      <div class="row no-gutters" id="off_stage_hero_div_str_2">
-      </div>
-    </div>
-    <div class="hero_row_div">
-      <div class="row no-gutters" id="off_stage_hero_div_agi_1">
-      </div>
-      <div class="row no-gutters" id="off_stage_hero_div_agi_2">
+      <div class="row no-gutters off_stage_hero_div" id="off_stage_hero_div_str_2">
       </div>
     </div>
     <div class="hero_row_div">
-      <div class="row no-gutters" id="off_stage_hero_div_int_1">
+      <div class="row no-gutters off_stage_hero_div" id="off_stage_hero_div_agi_1">
       </div>
-      <div class="row no-gutters" id="off_stage_hero_div_int_2">
+      <div class="row no-gutters off_stage_hero_div" id="off_stage_hero_div_agi_2">
+      </div>
+    </div>
+    <div class="hero_row_div">
+      <div class="row no-gutters off_stage_hero_div" id="off_stage_hero_div_int_1">
+      </div>
+      <div class="row no-gutters off_stage_hero_div" id="off_stage_hero_div_int_2">
       </div>
     </div>
   </div>

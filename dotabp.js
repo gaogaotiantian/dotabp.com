@@ -243,6 +243,62 @@ function RefreshPage() {
         }
     });
 }
+
+function ReorderHeros(language) {
+    if (language == "zh-cn") {
+        var lineMax = 21;
+        var heroStr = ['Elder Titan', 'Undying', 'Abaddon', 'Timbersaw', 'Omniknight', 'Beastmaster', 'Legion Commander', 'Wraith King', 'Phoenix', 'Centaur Warrunner', 'Clockwerk', 'Huskar', 'Lifestealer', 'Earth Spirit', 'Underlord', 'Tiny', 'Tusk', 'Pudge', 'Earthshaker', 'Axe', 'Slardar', 'Sven', 'Kunkka', 'Night Stalker', 'Doom', 'Treant Protector', 'Sand King', 'Chaos Knight', 'Tidehunter', 'Alchemist', 'Lycan', 'Io', 'Spirit Breaker', 'Brewmaster', 'Bristleback', 'Magnus', 'Dragon Knight'];
+        var heroAgi = ['Juggernaut', 'Clinkz', 'Viper', 'Razor', 'Venomancer', 'Riki', 'Drow Ranger', 'Morphling', 'Nyx Assassin', 'Bloodseeker', 'Templar Assassin', 'Vengeful Spirit', 'Arc Warden', 'Naga Siren', 'Troll Warlord', 'Phantom Assassin', 'Phantom Lancer', 'Spectre', 'Shadow Fiend', 'Lone Druid', 'Terrorblade', 'Anti-Mage', 'Slark', 'Ember Spirit', 'Ursa', 'Sniper', 'Gyrocopter', 'Mirana', 'Meepo', 'Weaver', 'Medusa', 'Broodmother', 'Faceless Void', 'Bounty Hunter', 'Luna', 'Monkey King'];
+        var heroInt = ['Tinker', "Nature's Prophet", 'Keeper of the Light', 'Skywrath Mage', 'Zeus', 'Winter Wyvern', 'Techies', 'Witch Doctor', 'Lich', 'Puck', 'Pugna', 'Disruptor', 'Dazzle', 'Leshrac', 'Rubick', 'Shadow Demon', 'Shadow Shaman', 'Warlock', 'Jakiro', 'Death Prophet', 'Outworld Devourer', 'Crystal Maiden', 'Silencer', 'Queen of Pain', 'Necrophos', 'Invoker', 'Oracle', 'Bane', 'Visage', 'Lina', 'Lion', 'Batrider', 'Enigma', 'Chen', 'Storm Spirit', 'Windranger', 'Ogre Magi', 'Enchantress', 'Dark Seer'];
+    } else {
+        var lineMax = 20;
+        var heroStr = ['Abaddon', 'Alchemist', 'Axe', 'Beastmaster', 'Brewmaster', 'Bristleback', 'Centaur Warrunner', 'Chaos Knight', 'Clockwerk', 'Doom', 'Dragon Knight', 'Earth Spirit', 'Earthshaker', 'Elder Titan', 'Huskar', 'Io', 'Kunkka', 'Legion Commander', 'Lifestealer', 'Lycan', 'Magnus', 'Night Stalker', 'Omniknight', 'Phoenix', 'Pudge', 'Sand King', 'Slardar', 'Spirit Breaker', 'Sven', 'Tidehunter', 'Timbersaw', 'Tiny', 'Treant Protector', 'Tusk', 'Underlord', 'Undying', 'Wraith King'];
+        var heroAgi = ['Anti-Mage', 'Arc Warden', 'Bloodseeker', 'Bounty Hunter', 'Broodmother', 'Clinkz', 'Drow Ranger', 'Ember Spirit', 'Faceless Void', 'Gyrocopter', 'Juggernaut', 'Lone Druid', 'Luna', 'Medusa', 'Meepo', 'Mirana', 'Monkey King', 'Morphling', 'Naga Siren', 'Nyx Assassin', 'Phantom Assassin', 'Phantom Lancer', 'Razor', 'Riki', 'Shadow Fiend', 'Slark', 'Sniper', 'Spectre', 'Templar Assassin', 'Terrorblade', 'Troll Warlord', 'Ursa', 'Vengeful Spirit', 'Venomancer', 'Viper', 'Weaver'];
+        var heroInt = ['Ancient Apparition', 'Bane', 'Batrider', 'Chen', 'Crystal Maiden', 'Dark Seer', 'Dazzle', 'Death Prophet', 'Disruptor', 'Enchantress', 'Enigma', 'Invoker', 'Jakiro', 'Keeper of the Light', 'Leshrac', 'Lich', 'Lina', 'Lion', "Nature's Prophet", 'Necrophos', 'Ogre Magi', 'Oracle', 'Outworld Devourer', 'Puck', 'Pugna', 'Queen of Pain', 'Rubick', 'Shadow Demon', 'Shadow Shaman', 'Silencer', 'Skywrath Mage', 'Storm Spirit', 'Techies', 'Tinker', 'Visage', 'Warlock', 'Windranger', 'Winter Wyvern', 'Witch Doctor', 'Zeus'];
+    }
+    $(".off_stage_hero_div").empty();
+    for (var i = 0; i < lineMax; i++) {
+        $('#off_stage_hero_div_str_1').append($("<div>", {"class":"col off_stage_hero"}).append(AddHero(HeroLocalToOfficial(heroStr[i]))));
+        $('#off_stage_hero_div_agi_1').append($("<div>", {"class":"col off_stage_hero"}).append(AddHero(HeroLocalToOfficial(heroAgi[i]))));
+        $('#off_stage_hero_div_int_1').append($("<div>", {"class":"col off_stage_hero"}).append(AddHero(HeroLocalToOfficial(heroInt[i]))));
+        if (i +lineMax < heroStr.length) {
+            $('#off_stage_hero_div_str_2').append($("<div>", {"class":"col off_stage_hero"}).append(AddHero(HeroLocalToOfficial(heroStr[i+lineMax]))));
+        } else {
+            $('#off_stage_hero_div_str_2').append($("<div>", {"class":"col off_stage_hero"}));
+        }
+        if (i +lineMax < heroAgi.length) {
+            $('#off_stage_hero_div_agi_2').append($("<div>", {"class":"col off_stage_hero"}).append(AddHero(HeroLocalToOfficial(heroAgi[i+lineMax]))));
+        } else {
+            $('#off_stage_hero_div_agi_2').append($("<div>", {"class":"col off_stage_hero"}));
+        }
+        if (i + lineMax < heroInt.length) {
+            $('#off_stage_hero_div_int_2').append($("<div>", {"class":"col off_stage_hero"}).append(AddHero(HeroLocalToOfficial(heroInt[i+lineMax]))));
+        } else {
+            $('#off_stage_hero_div_int_2').append($("<div>", {"class":"col off_stage_hero"}));
+        }
+    }
+}
+function ReplaceText(language) {
+    if (language == "zh-cn") {
+        var key = 'zh-cn';
+    } else {
+        var key = 'en-us';
+    }
+    $(".multi_language").each(function() {
+        $(this).text(text_multi_language[key][$(this).attr("id")]);
+    })
+}
+function ChangeLanguage(language) {
+    ReplaceText(language);
+    ReorderHeros(language);
+}
+function GetLanguage() {
+    curLang = navigator.language;
+    if (!curLang) {
+        curLang = navigator.browserLanguage;
+    }
+    return curLang;
+}
 $(document).ready(function() {
     // Put all heros
     var heroStr = ["Axe", "Earthshaker", "Pudge", "Sand King", "Sven", "Tiny", "Kunkka", "Slardar", "Tidehunter", "Beastmaster", "Wraith King", "Dragon Knight", "Clockwerk", "Lifestealer", "Omniknight", "Huskar", "Night Stalker", "Doom", "Spirit Breaker", "Alchemist", "Lycan", "Brewmaster", "Chaos Knight", "Treant Protector", "Undying", "Io", "Centaur Warrunner", "Magnus", "Timbersaw", "Bristleback", "Tusk", "Abaddon", "Elder Titan", "Legion Commander", "Earth Spirit", "Underlord", "Phoenix"].sort();
@@ -254,26 +310,13 @@ $(document).ready(function() {
         heroList = JSON.parse(JSON.stringify(data["heroes"]));
     })
     .done(function() {
-        for (i = 0; i < 20; i++) {
-            $('#off_stage_hero_div_str_1').append($("<div>", {"class":"col off_stage_hero"}).append(AddHero(HeroLocalToOfficial(heroStr[i]))));
-            $('#off_stage_hero_div_agi_1').append($("<div>", {"class":"col off_stage_hero"}).append(AddHero(HeroLocalToOfficial(heroAgi[i]))));
-            $('#off_stage_hero_div_int_1').append($("<div>", {"class":"col off_stage_hero"}).append(AddHero(HeroLocalToOfficial(heroInt[i]))));
-            if (20 + i < heroStr.length) {
-                $('#off_stage_hero_div_str_2').append($("<div>", {"class":"col off_stage_hero"}).append(AddHero(HeroLocalToOfficial(heroStr[i+20]))));
-            } else {
-                $('#off_stage_hero_div_str_2').append($("<div>", {"class":"col off_stage_hero"}));
-            }
-            if (20 + i < heroAgi.length) {
-                $('#off_stage_hero_div_agi_2').append($("<div>", {"class":"col off_stage_hero"}).append(AddHero(HeroLocalToOfficial(heroAgi[i+20]))));
-            } else {
-                $('#off_stage_hero_div_agi_2').append($("<div>", {"class":"col off_stage_hero"}));
-            }
-            if (20 + i < heroInt.length) {
-                $('#off_stage_hero_div_int_2').append($("<div>", {"class":"col off_stage_hero"}).append(AddHero(HeroLocalToOfficial(heroInt[i+20]))));
-            } else {
-                $('#off_stage_hero_div_int_2').append($("<div>", {"class":"col off_stage_hero"}));
-            }
+        var lang = GetLanguage().toLowerCase();
+        if (lang == "zh-cn") {
+            $("#language_select").val("Chinese");
+        } else {
+            $("#language_select").val("English");
         }
+        ChangeLanguage(lang);
     });
 
     $.getJSON("hero_data.json", function(data) {
@@ -342,5 +385,13 @@ $(document).ready(function() {
     .on('mouseleave', 'img', function(e) {
         $(this).css({"border-color":"transparent"});
         $(".on_stage_hero").find("img").css({"border-color":"transparent"});
-    });
+    })
+    .on('change', '#language_select', function(e) {
+        if ($(this).val() == "English") {
+            ChangeLanguage("en-us");
+        } else if ($(this).val() == "Chinese") {
+            ChangeLanguage("zh-cn");
+        }
+    })
+    ;
 });
