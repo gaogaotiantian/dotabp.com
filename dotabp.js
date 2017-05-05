@@ -230,7 +230,7 @@ function RefreshPage() {
         }
     }
     // Update win rate here
-    $('#win_rate').text("Win Rate: " + GetWinRate().toString() + "%");
+    $('#win_rate_val').text(GetWinRate().toString() + "%");
 
     // Refresh hero rate
     $(".hero_data").each(function() {
@@ -291,6 +291,7 @@ function ReplaceText(language) {
 function ChangeLanguage(language) {
     ReplaceText(language);
     ReorderHeros(language);
+    RefreshPage();
 }
 function GetLanguage() {
     curLang = navigator.language;
