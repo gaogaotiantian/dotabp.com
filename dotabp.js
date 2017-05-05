@@ -230,7 +230,7 @@ function RefreshPage() {
         }
     }
     // Update win rate here
-    $('#win_rate_p').text("Win Rate: " + GetWinRate().toString() + "%");
+    $('#win_rate').text("Win Rate: " + GetWinRate().toString() + "%");
 
     // Refresh hero rate
     $(".hero_data").each(function() {
