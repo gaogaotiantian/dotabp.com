@@ -2,6 +2,7 @@ var heroList;
 var selfTeam = [];
 var enemyTeam = [];
 var heroData;
+var global_lang = "en-us";
 
 // Input of the function is -1 to 1
 // If it's not, it will be saturated
@@ -42,8 +43,8 @@ function AddHero(heroName) {
     html += '</div>';
     return html
 }
-function GetHeroDataHtml(heroName, heroType = "") {
-    var html = $("<p>");
+function GetHeroDataHtml(heroName, heroType = "", lang = global_lang) {
+    var html = $("<div>");
     var d = GetHeroData(heroName);
     var team = d[0];
     var opp = -d[1];
@@ -53,44 +54,48 @@ function GetHeroDataHtml(heroName, heroType = "") {
     var team_color_sat = 255 - Math.min(255, Math.round(Math.abs(team/5*255))).toString();
     var opp_color_sat = 255 - Math.min(255, Math.round(Math.abs(opp/5*255))).toString();
     if (heroType != "enemy") {
-        if (team > 0) {
-            $t.text("Team +" + team + "%");
+        var $d = $("<div>").attr({"class":"dire_hero_data"});
+        if (team >= 0) {
+            $t.text(text_multi_language[lang]["team_short"] + " +" + team + "%");
             $t.css({"color":"rgb(" +team_color_sat+",255,"+team_color_sat+")"});
         } else {
-            $t.text("Team " + team + "%");
+            $t.text(text_multi_language[lang]["team_short"] + " " + team + "%");
             $t.css({"color":"rgb(255,"+team_color_sat+","+team_color_sat+")"});
         }
-        html.append($t);
-        html.append("<br>");
-        $t = $("<span>")
-        if (self_corr > 0) {
-            $t.text("Corr +" + self_corr + "%");
+        $d.append($t);
+        $d.append("<br>");
+        $t = $("<span>");
+        if (self_corr >= 0) {
+            $t.text(text_multi_language[lang]["relative"] + " +" + self_corr + "%");
         } else {
-            $t.text("Corr " + self_corr + "%");
+            $t.text(text_multi_language[lang]["relative"] + " " + self_corr + "%");
         }
         $t.css({"color":RateToColor(self_corr/10)});
-        html.append($t);
-        html.append("<br>");
+        $d.append($t);
+        $d.append("<br>");
+        html.append($d);
     }
     if (heroType != "self") {
+        var $d = $('<div>').attr({"class":"radiant_hero_data"});
         $t = $("<span>");
         if (opp > 0) {
-            $t.text("Opp +" + opp + "%");
+            $t.text(text_multi_language[lang]["opp_short"] + " +" + opp + "%");
             $t.css({"color":"rgb(" +opp_color_sat+",255,"+opp_color_sat+")"});
         } else {
-            $t.text("Opp " + opp + "%");
+            $t.text(text_multi_language[lang]["opp_short"] + " " + opp + "%");
             $t.css({"color":"rgb(255,"+opp_color_sat+","+opp_color_sat+")"});
         }
-        html.append($t);
-        html.append("<br>");
+        $d.append($t);
+        $d.append("<br>");
         $t = $("<span>")
         if (enemy_corr > 0) {
-            $t.text("Corr +" + enemy_corr + "%");
+            $t.text(text_multi_language[lang]["relative"] + " +" + enemy_corr + "%");
         } else {
-            $t.text("Corr " + enemy_corr + "%");
+            $t.text(text_multi_language[lang]["relative"] + " " + enemy_corr + "%");
         }
         $t.css({"color":RateToColor(enemy_corr/10)});
-        html.append($t);
+        $d.append($t)
+        html.append($d);
     }
     return html.html()
 }
@@ -289,6 +294,11 @@ function ReplaceText(language) {
     })
 }
 function ChangeLanguage(language) {
+    if (language == "zh-cn") {
+        global_lang = "zh-cn";
+    } else {
+        global_lang = "en-us";
+    }
     ReplaceText(language);
     ReorderHeros(language);
     RefreshPage();
@@ -322,6 +332,7 @@ $(document).ready(function() {
 
     $.getJSON("hero_data.json", function(data) {
         heroData = JSON.parse(JSON.stringify(data));
+        $("#footer_small").html('Copyright &copy; 2017, <a href="mailto:gaogaotiantian@hotmail.com">Tian Gao</a> | Last time database updated: ' + heroData["updateTime"]);
     })
     .done(function() {
         RefreshPage();

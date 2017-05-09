@@ -22,6 +22,17 @@ body {
     width:100%;
     text-align:center;
 }
+#language_div{
+    padding:10px;
+}
+#language_select,#language_span{
+    float:right;
+    margin:2px;
+}
 .hero_data {
     font-size:12px;
+}
+.dire_hero_data{
+}
+.radiant_hero_data{
 }
