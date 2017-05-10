@@ -33,15 +33,15 @@ function AddHero(heroName) {
     if (heroName.toLowerCase() != heroName) {
         heroName = HeroLocalToOfficial(heroName);
     }
-    var html = "";
-    var imgSrc = 'http://cdn.dota2.com/apps/dota2/images/heroes/' + heroName.toLowerCase() + '_lg.png'
-    html += '<div class="hero" heroName="' + heroName + '">';
-    html += '<img src="' + imgSrc + '">';
-    html += '<div class="hero_data" heroName="' + heroName + '">';
-    html += GetHeroDataHtml(heroName);
-    html += '</div>'
-    html += '</div>';
-    return html
+    var imgSrc = 'http://cdn.dota2.com/apps/dota2/images/heroes/' + heroName.toLowerCase() + '_lg.png';
+    html = $("<div>");
+    var $hero = $('<div>').attr({"class":"hero", "heroName":heroName, "heroEnName":OfficialToLocal(heroName, "en"), "heroCnName":OfficialToLocal(heroName, "cn")});
+    $hero.append($('<img>').attr({"src":imgSrc}));
+    var $hero_data=$("<div>").attr({"class":"hero_data", "heroName":heroName, "heroEnName":OfficialToLocal(heroName, "en"), "heroCnName":OfficialToLocal(heroName, "cn")});
+    $hero_data.append(GetHeroDataHtml(heroName));
+    $hero.append($hero_data);
+    html.append($hero);
+    return html.html()
 }
 function GetHeroDataHtml(heroName, heroType = "", lang = global_lang) {
     var html = $("<div>");
@@ -204,10 +204,6 @@ function GetHeroRate(heroName) {
     }
     return 1;
 }
-function RefreshHeroDiv(d) {
-    d.empty();
-    d.html(AddHero('spectre'));
-}
 function HeroLocalToOfficial(localName) {
     if (localName == "") {
         return "";
@@ -217,7 +213,22 @@ function HeroLocalToOfficial(localName) {
             return heroList[i]["name"];
         } 
     }
-    alert("There's no hero named "+localName)
+    alert("There's no hero named "+localName);
+}
+function OfficialToLocal(officialName, lang="en") {
+    if (officialName == "") {
+        return "";
+    }
+    for (var i = 0; i < heroList.length; i++) {
+        if (heroList[i]["name"] == officialName) {
+            if (lang == "en") {
+                return heroList[i]["localized_name"];
+            } else if (lang == "cn") {
+                return heroList[i]["localized_name_cn"];
+            }
+        }
+    }
+    alert("There's no hero named "+officialName);
 }
 function RefreshPage() {
     $('#on_stage_hero_self_div').empty();
@@ -311,10 +322,6 @@ function GetLanguage() {
     return curLang;
 }
 $(document).ready(function() {
-    // Put all heros
-    var heroStr = ["Axe", "Earthshaker", "Pudge", "Sand King", "Sven", "Tiny", "Kunkka", "Slardar", "Tidehunter", "Beastmaster", "Wraith King", "Dragon Knight", "Clockwerk", "Lifestealer", "Omniknight", "Huskar", "Night Stalker", "Doom", "Spirit Breaker", "Alchemist", "Lycan", "Brewmaster", "Chaos Knight", "Treant Protector", "Undying", "Io", "Centaur Warrunner", "Magnus", "Timbersaw", "Bristleback", "Tusk", "Abaddon", "Elder Titan", "Legion Commander", "Earth Spirit", "Underlord", "Phoenix"].sort();
-    var heroAgi = ["Anti-Mage", "Bloodseeker", "Drow Ranger", "Juggernaut", "Mirana", "Morphling", "Shadow Fiend", "Phantom Lancer", "Razor", "Vengeful Spirit", "Riki", "Sniper", "Venomancer", "Faceless Void", "Phantom Assassin", "Templar Assassin", "Viper", "Luna", "Clinkz", "Broodmother", "Bounty Hunter", "Weaver", "Spectre", "Ursa", "Gyrocopter", "Lone Druid", "Meepo", "Nyx Assassin", "Naga Siren", "Slark", "Medusa", "Troll Warlord", "Ember Spirit", "Terrorblade", "Arc Warden", "Monkey King"].sort();
-    var heroInt = ["Bane", "Crystal Maiden", "Puck", "Storm Spirit", "Windranger", "Zeus", "Lina", "Lion", "Shadow Shaman", "Witch Doctor", "Lich", "Enigma", "Tinker", "Necrophos", "Warlock", "Queen of Pain", "Death Prophet", "Pugna", "Dazzle", "Leshrac", "Nature's Prophet", "Dark Seer", "Enchantress", "Jakiro", "Batrider", "Chen", "Ancient Apparition", "Invoker", "Silencer", "Outworld Devourer", "Shadow Demon", "Ogre Magi", "Rubick", "Disruptor", "Keeper of the Light", "Visage", "Skywrath Mage", "Techies", "Oracle", "Winter Wyvern"].sort();
     // Read all json data
     $.getJSON("hero_list.json", function(data) {
         // Deep copy here
@@ -404,6 +411,19 @@ $(document).ready(function() {
         } else if ($(this).val() == "Chinese") {
             ChangeLanguage("zh-cn");
         }
+    })
+    .on('input', '#hero_search', function(e) {
+        var keyWord = $(this).val().toLowerCase();
+        $('.off_stage_hero').each(function() {
+            if ($(this).find(".hero").length != 0) {
+                if ($(this).find(".hero").attr("heroEnName").toLowerCase().indexOf(keyWord) == -1 && 
+                    $(this).find(".hero").attr("heroCnName").indexOf(keyWord) == -1) {
+                    $(this).css({"opacity":0.2});
+                } else {
+                    $(this).css({"opacity":1});
+                }
+            }
+        });
     })
     ;
 });

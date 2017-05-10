@@ -32,7 +32,8 @@ body {
 .hero_data {
     font-size:12px;
 }
-.dire_hero_data{
-}
-.radiant_hero_data{
+#hero_search {
+    margin:5px;
+    width:95%;
+    float:right;
 }
