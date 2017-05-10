@@ -1,12 +1,12 @@
 var text_multi_language = {
     "en-us" : {
         "match_status" : "Match Status",
-        "your_team" : "Dire",
-        "enemy_team" : "Radiant",
-        "win_rate" : "Dire Win Rate: ",
+        "your_team" : "Radiant",
+        "enemy_team" : "Dire",
+        "win_rate" : "Radiant Win Rate: ",
         "choose_hero" : "Choose Hero",
-        "team_short" : "Dire",
-        "opp_short" : "Radiant",
+        "team_short" : "Radiant",
+        "opp_short" : "Dire",
         "relative":"Relative"
     },
     "zh-cn" : {
