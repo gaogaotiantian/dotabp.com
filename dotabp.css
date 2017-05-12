@@ -15,12 +15,13 @@ body {
     margin:5px;
     background-color:#333333;
 }
-#win_rate_div {
-    font-size:25px;
+#win_rate_div{
+    display:table;
+    font-size:1.5rem;
 }
 #win_rate_p {
-    width:100%;
-    text-align:center;
+    display:table-cell;
+    vertical-align:middle;
 }
 #language_div{
     padding:10px;
@@ -36,4 +37,7 @@ body {
     margin:5px;
     width:95%;
     float:right;
+}
+#vs_p {
+    font-size:4rem;
 }
